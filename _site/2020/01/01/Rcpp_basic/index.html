@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Data Scientist Grad student at Indiana University">
+    <meta name="keywords"  content="Data Science, machine Learning, Art, Prudhvi Vajja, ">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Introduction to Rcpp: making R much much faster - ✨StarBoy✨">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="Pakcage Rcpp allows you to use C++ or C code in an R environment. It’s a great tool to enhance speed of your program, at the price of longer programming and harder debugging. But when it finally wo...">
+    
+    <meta property="article:published_time" content="2020-01-01T00:00:00Z">
+    
+    
+    <meta property="article:author" content="Li Zeng">
+    
+    
+    <meta property="article:tag" content="R">
+    
+    
+    <meta property="og:image" content="http://localhost:4000/assets/images/edit/A_edit1.jpg">
+    <meta property="og:url" content="http://localhost:4000/2020/01/01/Rcpp_basic/">
+    <meta property="og:site_name" content="✨StarBoy✨">
+    
+    <title>Introduction to Rcpp: making R much much faster - ✨StarBoy✨</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <!-- <link rel="shortcut icon" href="/img/iconsun.png"> -->
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="http://localhost:4000/2020/01/01/Rcpp_basic/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Thoughts</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/people4.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/people4.jpg');
+        background: ;
+    }
+
+    
+</style>
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=R" title="R">R</a>
+                        
+                    </div>
+                    <h1>Introduction to Rcpp: making R much much faster</h1>
+                    
+                    <h2 class="subheading"></h2>
+                    <span class="meta">Posted by Li Zeng on January 1, 2020</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+
+				<p>Pakcage <em><strong>Rcpp</strong></em> allows you to use <em>C++</em> or <em>C</em> code in an R environment. It’s a great tool to enhance speed of your program, at the price of longer programming and harder debugging. But when it finally works out, it’s totally worth it.</p>
+
+<p>On <em>stackoverflow</em> (as of date 2016/9/22), number of <strong>r</strong> tagged questions is 153199, while number of <strong>rcpp</strong> tagged questions is 1193. Only 1% of the questions asked are about Rcpp. This implies the fact that not that many R users are also Rcpp users. The lack in population leads to incomplete documentation, and limited references you can find when you get into trouble during Rcpp programming.</p>
+
+<p>The goal of this documentation is to give a general introduction to Rcpp, use it as a framework for future update with more details. We assume knowledge of both C++ and R programming, so there will be no introduction about them.</p>
+
+<h3 id="collection-of-online-references">Collection of online references</h3>
+<p>You might find the following web pages useful:</p>
+<ul>
+  <li>Hadley Wickham’s Advanced R: <a href="http://adv-r.had.co.nz/Rcpp.html">Chapter from Advanced R</a></li>
+  <li>Online gitbook: <a href="https://www.gitbook.com/book/teuder/introduction-to-rcpp/details">Introduction to Rcpp</a></li>
+  <li>The <em>Armadillo</em> library details, with introduction about all member functions: <a href="http://arma.sourceforge.net/docs.html">Armadillo Website</a></li>
+  <li>Rcpp documentation: <a href="http://dirk.eddelbuettel.com/code/rcpp/html/index.html">Rcpp Version 0.12.7 Documentation</a></li>
+  <li>Understanding R’s C interface <a href="http://adv-r.had.co.nz/C-interface.html">C interface in R</a></li>
+</ul>
+
+<h2 id="two-ways-to-incorporate-c-functions">Two ways to incorporate C++ functions</h2>
+
+<ul>
+  <li><strong>Inline function definition</strong>: usage of <code class="language-plaintext highlighter-rouge">cppFunction()</code></li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">cppFunction</span><span class="p">(</span>
+<span class="s">" int my_C_function (int x){</span><span class="err">
+</span><span class="s">  int y=5;</span><span class="err">
+</span><span class="s">  return  x+y;</span><span class="err">
+</span><span class="s">}"</span><span class="p">)</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li><strong>Write .cpp source file</strong><br />
+ You can also write <em>.cpp</em> source files outside and use<br />
+ <code class="language-plaintext highlighter-rouge">sourceCpp("your_file_name.cpp")</code>
+ to source the file. However, there are certain rules to be followed. A simple template is shown below:</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="cp">#include &lt;Rcpp.h&gt;
+</span><span class="n">using</span> <span class="n">namespace</span> <span class="n">Rcpp</span><span class="p">;</span>
+<span class="c1">//[[Rcpp::export]]  /* to show that this function is to be exported to R */  </span>
+<span class="cm">/* write your C++ function here */</span>
+<span class="kt">int</span> <span class="nf">my_C_function</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">){</span>
+<span class="k">return</span> <span class="n">x</span><span class="o">+</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="rcpp-data-structure">Rcpp Data Structure</h2>
+
+<h3 id="numericvector">NumericVector</h3>
+<ul>
+  <li>Basics:</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></td><td class="rouge-code"><pre> <span class="n">NumericVector</span> <span class="nf">v</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span>  <span class="c1">// rep(0,3)</span>
+ <span class="n">NumericVector</span> <span class="n">v</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">};</span>
+ <span class="n">NumericVector</span> <span class="nf">v</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">.</span><span class="mi">0</span><span class="p">);</span>  <span class="c1">// rep(5,3)</span>
+ <span class="n">NumericVector</span> <span class="n">v</span> <span class="o">=</span> <span class="n">NumericVector</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+ <span class="c1">//</span>
+ <span class="c1">// subsetting</span>
+ <span class="n">v</span><span class="p">[</span><span class="n">u</span><span class="p">];</span> <span class="c1">// where u is a LogicalVector</span>
+ <span class="c1">//</span>
+ <span class="c1">//Use `clone()` function when you don't want your vector or matrix value to be changed:</span>
+ <span class="n">NumericVector</span> <span class="n">v1</span><span class="o">=</span><span class="n">v2</span><span class="p">;</span> <span class="c1">// change of v1 will result in change of v2</span>
+ <span class="n">NumericVector</span> <span class="n">v1</span><span class="o">=</span><span class="n">clone</span><span class="p">(</span><span class="n">v2</span><span class="p">);</span> <span class="c1">// v2 will not be changed, when v1 is changed</span>
+ <span class="c1">//</span>
+ <span class="c1">// member functions:</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="c1">//  length of v</span>
+ <span class="c1">//</span>
+ <span class="c1">// Doing iterations:   </span>
+ <span class="n">NumericVector</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span><span class="p">;</span> <span class="c1">// 'it' is then a pointer to the head of the vector</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>What you get from logical vector subsetting <code class="language-plaintext highlighter-rouge">v[u]</code> is a pointer. To be able to use it, you need to wrap it up into whatever type you want it to have (eg. <code class="language-plaintext highlighter-rouge">as&lt;NumericVector&gt;(v[u])</code>)</p>
+
+<h3 id="numericmatrix">NumericMatrix</h3>
+<ul>
+  <li>Basic</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="n">NumericMatrix</span> <span class="n">M</span><span class="p">;</span> <span class="c1">// multiple initiation methods as  NumericVector</span>
+<span class="n">M</span><span class="p">.</span><span class="n">length</span><span class="p">();</span> <span class="c1">// total elements of M</span>
+<span class="n">M</span><span class="p">.</span><span class="n">nrow</span><span class="p">(),</span> <span class="n">M</span><span class="p">.</span><span class="n">ncol</span><span class="p">()</span> <span class="c1">// returns row , column number</span>
+<span class="n">M</span><span class="p">.</span><span class="n">row</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">M</span><span class="p">.</span><span class="n">col</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="c1">// returns pointers to row i, col j</span>
+<span class="n">NumericVector</span> <span class="n">y</span><span class="o">=</span> <span class="n">M</span><span class="p">(</span> <span class="n">_</span> <span class="p">,</span> <span class="n">i</span><span class="p">);</span> <span class="c1">// get ith column, M(_,i) itself is also a pointer</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>More operations of Matrix in  <em><strong>RcppArmadillo</strong></em> Section.</p>
+
+<h3 id="dataframe">DataFrame</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre><span class="n">DataFrame</span> <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="o">::</span><span class="n">create</span><span class="p">(</span><span class="n">Named</span><span class="p">(</span><span class="s">"a1"</span><span class="p">)</span><span class="o">=</span><span class="n">v1</span><span class="p">,</span> <span class="n">_</span><span class="p">[</span><span class="s">"a2"</span><span class="p">]</span> <span class="o">=</span><span class="n">v2</span><span class="p">);</span><span class="err">}</span> <span class="c1">// OK to do without names</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+<h3 id="list">List</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c1">// names can be added as well following same routine as in DataFrame</span>
+<span class="n">List</span> <span class="n">L</span> <span class="o">=</span> <span class="n">List</span><span class="o">::</span><span class="n">create</span> <span class="p">(</span><span class="n">v1</span><span class="p">,</span><span class="n">v2</span><span class="p">);</span> 
+<span class="c1">// access elements by names</span>
+<span class="kt">int</span> <span class="n">K</span> <span class="o">=</span>  <span class="n">Mylist</span><span class="p">[</span><span class="s">"var_name"</span><span class="p">];</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h2 id="use-r-functions">Use R Functions</h2>
+<p>Example:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="c1">//example 1: use R function</span>
+<span class="n">Function</span> <span class="nf">dnorm</span><span class="p">(</span><span class="s">"dnorm"</span><span class="p">);</span>
+<span class="kt">double</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">dnorm</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">Named</span><span class="p">(</span><span class="s">"mean"</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="n">Named</span><span class="p">(</span><span class="s">"sd"</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">Named</span><span class="p">(</span><span class="s">"log"</span><span class="p">,</span><span class="mi">1</span><span class="p">));</span>
+
+<span class="c1">//example 2: use function from global environment</span>
+<span class="n">Environment</span> <span class="n">env</span><span class="o">=</span><span class="n">Environment</span><span class="o">::</span><span class="n">global_env</span><span class="p">();</span>
+<span class="n">Function</span> <span class="nf">my_fun</span><span class="p">(</span><span class="s">"fun_in_glob"</span><span class="p">);</span> <span class="c1">// fun_in_glob() is a function defined existing in global env</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Transition from C++ to R takes a lot of time. Always try to find function supported by Rcpp or write your own function rather than refer functions from R package.</p>
+
+<h2 id="linear-algebra-rcpparmadillo">Linear Algebra: <strong>RcppArmadillo</strong></h2>
+<ul>
+  <li>
+    <p>Possible problems during installation and compilation: <a href="http://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks-lgfortran-and-lquadmath-error">-lgfortran and -lquadmath problem</a></p>
+  </li>
+  <li>When writing <em>RcppArmadillo</em> source files, use <code class="language-plaintext highlighter-rouge">#include &lt;RcppArmadillo.h&gt;</code> then <code class="language-plaintext highlighter-rouge">&lt;Rcpp.h&gt;</code> is spontaneously implied.</li>
+  <li>
+    <p>Include <code class="language-plaintext highlighter-rouge">using namespace arma;</code> to save the trouble of writing <code class="language-plaintext highlighter-rouge">arma::</code> everytime.</p>
+  </li>
+  <li>Basic variable types: <strong>arma::mat, arma::vec</strong></li>
+</ul>
+
+<h3 id="armamat">arma:mat</h3>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></td><td class="rouge-code"><pre><span class="c1">// initialization</span>
+<span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="n">M</span><span class="p">;</span> <span class="c1">// initializes a 0 size matrix</span>
+<span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="nf">M</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">);</span> <span class="c1">// a  by b matrix,  filled with 0.</span>
+<span class="c1">//</span>
+<span class="c1">//member functions</span>
+<span class="n">M</span><span class="p">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">M</span><span class="p">.</span><span class="n">n_cols</span> <span class="c1">//number of rows and columns</span>
+<span class="n">M</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="c1">// returns number of elements</span>
+<span class="n">M</span><span class="p">.</span><span class="n">print</span><span class="p">()</span> <span class="c1">//print the matrix  </span>
+<span class="n">M</span><span class="p">.</span><span class="n">reshape</span><span class="p">(),</span> <span class="n">M</span><span class="p">.</span><span class="n">fill</span><span class="p">(),</span> <span class="n">M</span><span class="p">.</span><span class="n">ones</span><span class="p">(),</span> <span class="n">M</span><span class="p">.</span><span class="n">zeros</span><span class="p">()</span> <span class="c1">//</span>
+<span class="n">M</span><span class="p">.</span><span class="n">t</span><span class="p">()</span><span class="c1">// transpose</span>
+<span class="n">M</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="n">M</span><span class="p">.</span><span class="n">row</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">M</span><span class="p">.</span><span class="n">col</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">M</span><span class="p">.</span><span class="n">row</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="c1">// accessing elements</span>
+<span class="c1">//</span>
+<span class="c1">//operators for M</span>
+<span class="n">M</span> <span class="o">%</span> <span class="n">M</span><span class="p">,</span> <span class="n">M</span> <span class="o">/</span> <span class="n">M</span> <span class="c1">// element wise multiplication, division</span>
+<span class="n">inv</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="c1">// inverse</span>
+<span class="n">M</span><span class="o">*</span><span class="n">M</span> <span class="c1">//matrix product;</span>
+<span class="c1">//</span>
+<span class="c1">// Matrix subsetting</span>
+<span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="n">M2</span> <span class="o">=</span> <span class="n">M</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">from</span><span class="p">,</span> <span class="n">to</span><span class="p">);</span> <span class="c1">// contiguous; use M.cols() for column subsetting</span>
+<span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="n">M3</span><span class="o">=</span> <span class="n">M</span><span class="p">.</span><span class="n">submat</span><span class="p">(</span><span class="n">row_from</span><span class="p">,</span> <span class="n">col_from</span><span class="p">,</span> <span class="n">row_to</span><span class="p">,</span> <span class="n">col_to</span><span class="p">);</span> <span class="c1">// contiguous ; by both row and column</span>
+<span class="c1">// non-contiguous</span>
+<span class="c1">// access multiple rows by indices</span>
+<span class="c1">// index_vec need to be uvec (Col&lt;uword&gt;) or urowvec (Col&lt;uword&gt;) type</span>
+<span class="n">M</span><span class="p">.</span><span class="n">cols</span><span class="p">(</span><span class="n">index_vec</span><span class="p">),</span> <span class="n">M</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">index_vec</span><span class="p">)</span> 
+
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="armavec">arma::vec</h3>
+<p><strong>arma::vec</strong> is also treated as <strong>arma::mat</strong> with only one column.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre>	<span class="c1">// basics</span>
+	<span class="n">arma</span><span class="o">::</span><span class="n">vec</span> <span class="n">V</span><span class="p">;</span>
+	<span class="n">V</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="c1">// returns length of V</span>
+	<span class="c1">//</span>
+	<span class="c1">// vector subsetting</span>
+	<span class="n">v</span><span class="p">.</span><span class="n">subvec</span><span class="p">(</span> <span class="n">from</span><span class="p">,</span>  <span class="n">to</span><span class="p">);</span> <span class="c1">// contiguous subsetting; from, to are index</span>
+	<span class="c1">// non-contiguous</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="cube">Cube</h3>
+<p>Cube is three dimensional array. Less often used than <strong>arma::mat, arma::vec</strong>, but also useful.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></td><td class="rouge-code"><pre><span class="c1">//construtors</span>
+<span class="n">arma</span><span class="o">::</span><span class="n">cube</span> <span class="nf">x</span><span class="p">(</span><span class="n">n_row</span><span class="p">,</span> <span class="n">n_col</span><span class="p">,</span> <span class="n">n_slice</span><span class="p">);</span> <span class="c1">// all 0</span>
+<span class="c1">//</span>
+<span class="c1">// attributes</span>
+<span class="n">x</span><span class="p">.</span><span class="n">n_cols</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">n_rows</span><span class="p">,</span> <span class="n">x</span><span class="p">.</span><span class="n">n_slices</span> <span class="c1">// number of dimensions</span>
+<span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="c1">// number of elements</span>
+<span class="c1">//</span>
+<span class="c1">// member</span>
+<span class="n">x</span><span class="p">.</span><span class="n">slice</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="c1">// mat of slice i</span>
+<span class="n">x</span><span class="p">.</span><span class="n">slices</span><span class="p">(</span><span class="n">first_slice</span><span class="p">,</span> <span class="n">last_slice</span><span class="p">);</span> <span class="c1">// contiguous slices</span>
+<span class="n">x</span><span class="p">.</span><span class="n">subcube</span><span class="p">(</span><span class="n">row1</span><span class="p">,</span><span class="n">col1</span><span class="p">,</span><span class="n">slice1</span><span class="p">,</span><span class="n">row2</span><span class="p">,</span><span class="n">col2</span><span class="p">,</span><span class="n">slice2</span><span class="p">);</span> <span class="c1">// contiguous subcube</span>
+<span class="n">x</span><span class="p">.</span><span class="n">fill</span><span class="p">(</span><span class="kt">double</span> <span class="n">c</span><span class="p">);</span> <span class="c1">// fill the cube with c</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<h3 id="shared-functions"><em>shared functions</em></h3>
+<p>This section, I put in some useful functions mostly shared by both <em>arma::mat</em> and <em>arma::vec</em>, and some by <em>arma::cube</em>.</p>
+
+<ul>
+  <li><strong>Element-wise functions</strong>: <a href="http://arma.sourceforge.net/docs.html#misc_fns">element-wise</a>.</li>
+  <li><strong>Constructors</strong>: <a href="http://arma.sourceforge.net/docs.html#constructors_mat">mat constructor</a> and <a href="http://arma.sourceforge.net/docs.html#adv_constructors_mat">mat advanced constructor</a>.</li>
+  <li>others:</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></td><td class="rouge-code"><pre>	<span class="c1">// iterators</span>
+	<span class="n">arma</span><span class="o">::</span><span class="n">vec</span><span class="o">::</span><span class="n">iterator</span> <span class="n">it</span><span class="p">;</span> <span class="c1">// arma::vec::const_iterator for read only</span>
+	<span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">()</span> <span class="c1">// for vector</span>
+	<span class="n">v</span><span class="p">.</span><span class="n">begin_row</span><span class="p">(</span><span class="n">row_number</span><span class="p">),</span> <span class="n">v</span><span class="p">.</span><span class="n">end_row</span><span class="p">(</span><span class="n">row_number</span><span class="p">)</span> <span class="c1">// for mat; column version similar  </span>
+	<span class="c1">//</span>
+	<span class="n">diagmat</span><span class="p">(</span> <span class="n">M</span> <span class="p">)</span> <span class="c1">// generate diagonal matrix from given matrix or vector</span>
+	<span class="n">accu</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>  <span class="c1">// accumulate sum of all elements in vector or matrix</span>
+	<span class="c1">//</span>
+	<span class="c1">//elements access</span>
+	<span class="n">V</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">V</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="c1">// element i, for vector</span>
+	<span class="n">M</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="n">M</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="c1">// for matrix</span>
+	<span class="c1">//</span>
+	<span class="c1">// initialization</span>
+	<span class="n">ones</span><span class="p">(</span><span class="n">n_elem</span><span class="p">),</span> <span class="n">ones</span><span class="p">(</span><span class="n">n_rows</span><span class="p">,</span><span class="n">n_cols</span><span class="p">)</span> <span class="c1">// matrix filled with 1</span>
+	<span class="n">ones</span><span class="o">&lt;</span><span class="n">vec_type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">n_elem</span><span class="p">);</span> <span class="n">ones</span><span class="o">&lt;</span><span class="n">mat_type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">)</span>
+	<span class="n">randu</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">,</span> <span class="n">dim3</span><span class="p">);</span> <span class="c1">//unif(0,1); type can be : vec, mat, cube</span>
+	<span class="n">randu</span><span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dim1</span><span class="p">,</span> <span class="n">dim2</span><span class="p">,</span> <span class="n">dim3</span><span class="p">);</span> <span class="c1">// N(0,1)</span>
+	<span class="n">zeros</span><span class="o">&lt;</span><span class="n">vector_type</span><span class="o">/</span><span class="n">mat_type</span><span class="o">/</span><span class="n">cube_type</span><span class="o">&gt;</span><span class="p">(...);</span> <span class="c1">// initiation with 0s</span>
+	<span class="c1">//others</span>
+	<span class="p">.</span><span class="n">min</span><span class="p">();.</span><span class="n">max</span><span class="p">();</span> <span class="c1">// get minimum maximum</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Type conversion: <br />
+  say you have an input of type <em>NumericMatrix x</em>, you can convert it with: <br />
+  <code class="language-plaintext highlighter-rouge">arma::mat y= as&lt;arma::mat&gt;(x);</code></p>
+
+    <p>To work in the opposite direction use <em>wrap</em> function :<br />
+  <code class="language-plaintext highlighter-rouge">NumericVector x= wrap(y);</code></p>
+  </li>
+</ul>
+
+<h3 id="useful-topics">useful topics</h3>
+<ul>
+  <li>use logical vector to access submatrix/subvector:</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="nf">matrix_sub</span><span class="p">(</span><span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="n">M</span><span class="p">,</span> <span class="n">LogicalVector</span> <span class="n">a</span><span class="p">,</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// b=1: select row</span>
+  <span class="c1">// b=2: select column</span>
+  <span class="n">arma</span><span class="o">::</span><span class="n">mat</span> <span class="n">out</span><span class="p">;</span>
+  <span class="k">if</span><span class="p">(</span><span class="n">b</span><span class="o">==</span><span class="mi">2</span><span class="p">){</span>
+    <span class="n">arma</span><span class="o">::</span><span class="n">colvec</span> <span class="n">z</span><span class="o">=</span><span class="n">as</span><span class="o">&lt;</span><span class="n">arma</span><span class="o">::</span><span class="n">colvec</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">out</span><span class="o">=</span><span class="n">M</span><span class="p">.</span><span class="n">cols</span><span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">z</span><span class="o">==</span><span class="mi">1</span><span class="p">));</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">b</span><span class="o">==</span><span class="mi">1</span><span class="p">){</span>
+    <span class="n">arma</span><span class="o">::</span><span class="n">rowvec</span> <span class="n">z</span><span class="o">=</span><span class="n">as</span><span class="o">&lt;</span><span class="n">arma</span><span class="o">::</span><span class="n">rowvec</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+    <span class="n">out</span><span class="o">=</span><span class="n">M</span><span class="p">.</span><span class="n">rows</span><span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">z</span><span class="o">==</span><span class="mi">1</span><span class="p">));</span>
+  <span class="p">}</span>
+  
+  <span class="k">return</span> <span class="n">out</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>We first convert the logical vector <code class="language-plaintext highlighter-rouge">a</code> into <code class="language-plaintext highlighter-rouge">colvec</code> or <code class="language-plaintext highlighter-rouge">rowvec</code>, on which we can use the <code class="language-plaintext highlighter-rouge">find(expr)</code> function. <code class="language-plaintext highlighter-rouge">find</code> return the index (type <code class="language-plaintext highlighter-rouge">uvec</code>) where <code class="language-plaintext highlighter-rouge">expr</code> is true, and that index can be used to get submatrix.</p>
+
+<p>For vector, the steps can be easier:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="c1">// convert logical vector to uvec</span>
+<span class="n">arma</span><span class="o">::</span><span class="n">uvec</span> <span class="n">q</span> <span class="o">=</span> <span class="n">as</span><span class="o">&lt;</span><span class="n">arma</span><span class="o">::</span><span class="n">uvec</span><span class="o">&gt;</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="c1">// use .elem() function to get subvector</span>
+<span class="k">return</span> <span class="n">v</span><span class="p">.</span><span class="n">elem</span><span class="p">(</span><span class="n">find</span><span class="p">(</span><span class="n">q</span><span class="p">));</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>More on how to use find: <a href="http://arma.sourceforge.net/docs.html#find">find</a>.</p>
+
+<h2 id="work-with-distributions">Work with Distributions</h2>
+<p><em>Rcpp</em> provides many equivalents for R functions related to distributions, so you don’t have to scratch your head to write your own, or refer to those R functions with the price of a speed slow down.</p>
+<h5 id="uniform-distribution">Uniform distribution</h5>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R::runif(double a, double b)</code> : uniform from <code class="language-plaintext highlighter-rouge">[a,b]</code></li>
+</ul>
+
+<h5 id="binomial-distribution">Binomial distribution</h5>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R::dbinom(x, size, prob, log=0\1)</code>:expects 4 inputs<br />
+  <code class="language-plaintext highlighter-rouge">R::qbinom(p,size,prob,lower.tail,log.p)</code>: expects 5 inputs<br />
+  <code class="language-plaintext highlighter-rouge">R::rbinom(size,p)</code>: only generates one random value at a time; need to vectorize it if necessary<br />
+  same parameters as in <em>R</em>. For parameter <em>log</em>, use <code class="language-plaintext highlighter-rouge">0/1</code> instead of <code class="language-plaintext highlighter-rouge">true/false</code>.</li>
+</ul>
+
+<h5 id="poisson-distribution">Poisson distribution</h5>
+
+<h5 id="beta-distribution">Beta distribution</h5>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R::dbeta(double x, double a, double b, int log)</code></li>
+</ul>
+
+<h5 id="gamma-distribution">Gamma distribution</h5>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R::rgamma(double shape, double scale)</code> : it only takes scale rather than rate as input. There is also a vectorized version:
+  <code class="language-plaintext highlighter-rouge">Rcpp::rgamma(int n, double shape, double scale)</code><br />
+ 	<code class="language-plaintext highlighter-rouge">R::dgamma(double x, double shape, double scale, int logical)</code> : the 4th parameter control if output should be <em>log</em> transformed.</li>
+</ul>
+
+<h5 id="exponential-distribution">Exponential distribution</h5>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">R::rexp( double r )</code> : for generating one exponential random variable
+  <code class="language-plaintext highlighter-rouge">Rcpp::rexp( int n, double r)</code> : for generating an array of exponential numbers</li>
+</ul>
+
+<h2 id="frequently-used-functions">Frequently used functions</h2>
+<ul>
+  <li>
+    <p>Type convertion:<br />
+  <code class="language-plaintext highlighter-rouge">wrap()</code> :  a templated function that transforms an arbitrary object into a <em>SEXP</em>, that can be returned to R. <br />
+  eg:<br />
+  <code class="language-plaintext highlighter-rouge">NumericVector x= wrap(seq(1,n))</code></p>
+  </li>
+  <li>
+    <p>Console output:</p>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1">// Console output:</span>
+<span class="n">Rcout</span> <span class="o">&lt;&lt;</span> <span class="s">"Some message"</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>  
+<span class="n">Rcerr</span> <span class="o">&lt;&lt;</span> <span class="s">"Error message"</span> <span class="p">;</span>  
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>R <em>any()</em> equivalent:</li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre>  <span class="n">bool</span> <span class="nf">any_cpp</span><span class="p">(</span><span class="n">LogicalVector</span> <span class="n">lv</span><span class="p">)</span>
+  <span class="p">{</span><span class="k">return</span> <span class="n">is_true</span><span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="n">lv</span><span class="p">));}</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>R <em>seq()</em> equivalent:<br />
+<code class="language-plaintext highlighter-rouge">seq(int start,int end)</code> , it’s the same as R <code class="language-plaintext highlighter-rouge">seq( , ,by=1)</code>. The return type is <em>Rcpp::Range</em>, need to use <code class="language-plaintext highlighter-rouge">wrap()</code> function to make it a NumericVector.</p>
+  </li>
+  <li>
+    <p>R <em>sample()</em>:<br />
+For simple cases, we can adapt from <code class="language-plaintext highlighter-rouge">R::runif()</code> to achieve our goal. <br />
+ For example, when we want to sample one integer from <code class="language-plaintext highlighter-rouge">c(a:b)</code>, we can do <code class="language-plaintext highlighter-rouge">int out=R::runif(a,b+1)</code>.</p>
+  </li>
+</ul>
+
+<p>There is an equivalent <code class="language-plaintext highlighter-rouge">sample</code> function in <code class="language-plaintext highlighter-rouge">&lt;sample.h&gt;</code> file. To use it, we need to first <code class="language-plaintext highlighter-rouge">#include &lt;RcppArmadilloExtensions/sample.h&gt;</code> and follow the syntax: <br />
+ <code class="language-plaintext highlighter-rouge">Rcpp::RcppArmadillo::sample(sample_set,int size, bool replacement, weight_vec)</code>.</p>
+
+<p>See <a href="http://stackoverflow.com/questions/26384959/rcpp-r-sample-equivalent-from-a-numericvector">stackoverflow:sample</a>.</p>
+
+<ul>
+  <li><em>max()</em>  equivalent:<br />
+  <code class="language-plaintext highlighter-rouge">max( obj )</code> : obj can be <em>NumericVector</em></li>
+</ul>
+
+<h2 id="others">Others</h2>
+<ul>
+  <li>To use C++11 features, such as <em>range based for</em>, and more ways of variable initialization, include</li>
+</ul>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>//[[Rcpp::plugins("cpp11")]]
+</pre></td></tr></tbody></table></code></pre></div></div>
+<p>in <em>.cpp</em> source file comments.</p>
+
+<ul>
+  <li><em>Rcpp</em> functions take inputs from <em>R</em>, and <em>R</em> doesn’t have variable type <em>pointer</em>, thus when writing <em>Rcpp</em> functions we are not supposed to use pointers as input variable. <br />
+ If you don’t want the function to make a copy of your variable, you can specify the variable as e.g. <code class="language-plaintext highlighter-rouge">void my_fun(int &amp;var){}</code>, i.e.  passing a reference to the variable instead.</li>
+</ul>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2019/12/12/personal_website/" data-toggle="tooltip" data-placement="top" title="Build your own website (with Jekyll and Minimal-mistakes theme)">
+                        Previous<br>
+                        <span>Build your own website (with Jekyll and Minimal-mistakes theme)</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2020/01/15/bash/" data-toggle="tooltip" data-placement="top" title="some BASH topics">
+                        Next<br>
+                        <span>some BASH topics</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+                
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=R"
+                    title="R"
+                    rel="1">R</a>
+        
+                <a data-sort="0006" 
+                    href="/archive/?tag=Beginner"
+                    title="Beginner"
+                    rel="2">Beginner</a>
+        
+                <a data-sort="0006" 
+                    href="/archive/?tag=Pipeline"
+                    title="Pipeline"
+                    rel="2">Pipeline</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=AWS"
+                    title="AWS"
+                    rel="1">AWS</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=Advanced"
+                    title="Advanced"
+                    rel="1">Advanced</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=DataProcessing"
+                    title="DataProcessing"
+                    rel="1">DataProcessing</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=ML"
+                    title="ML"
+                    rel="1">ML</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=Ml"
+                    title="Ml"
+                    rel="1">Ml</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=NN"
+                    title="NN"
+                    rel="1">NN</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=Pandas"
+                    title="Pandas"
+                    rel="1">Pandas</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=PyTorch"
+                    title="PyTorch"
+                    rel="1">PyTorch</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=Python"
+                    title="Python"
+                    rel="1">Python</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=RandomForest"
+                    title="RandomForest"
+                    rel="1">RandomForest</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=Tips"
+                    title="Tips"
+                    rel="1">Tips</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=bash"
+                    title="bash"
+                    rel="1">bash</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=command"
+                    title="command"
+                    rel="1">command</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=fastai"
+                    title="fastai"
+                    rel="1">fastai</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=linux"
+                    title="linux"
+                    rel="1">linux</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "prudhvivajja";
+    var disqus_identifier = "/2020/01/01/Rcpp_basic";
+    var disqus_url = "http://localhost:4000/2020/01/01/Rcpp_basic/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  <li>
+    <a href="/feed.xml">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+
+  
+  <li>
+    <a href="https://medium.com/@Star_Boy">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-medium fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+
+  
+
+  
+  <li>
+    <a target="_blank" href="https://github.com/PrudhviVajja">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+
+  
+  <li>
+    <a target="_blank" href="https://www.linkedin.com/in/prudhvi-vajja-22079610b">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+
+  
+  <li>
+    <a href="https://twitter.com/Prudhvi_Vajja">
+      <span class="fa-stack fa-lg">
+        <i class="fa fa-circle fa-stack-2x"></i>
+        <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+      </span>
+    </a>
+  </li>
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Thoughts 2020
+                    <br>
+                    Powered by <a href="http://huangxuan.me">Hux Blog</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
+                        height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=LazyAlgorithms&repo=LazyAlgorithms.github.io&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-168809863-1';
+    var _gaDomain = 'LazyAlgorithms.github.io';
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+[
+  
+    {
+      "title"    : "⚡️Load the same csv file 10X faster and with 10X less memory.⚡️",
+      "subtitle" : "Pandas, Dask, MultiProcessing, Etc…",
+      "tags"     : "DataProcessing, Pandas, Python",
+      "url"      : "/2020/10/04/Load_data_faster/",
+      "date"     : "2020-10-04 00:00:00 -0400"
+    } ,
+  
+    {
+      "title"    : "Process of Creating an Effective Machine Learning Pipeline",
+      "subtitle" : "",
+      "tags"     : "Advanced, ML, Pipeline, AWS",
+      "url"      : "/2020/08/28/AdvanceMLPipeline/",
+      "date"     : "2020-08-28 00:00:00 -0400"
+    } ,
+  
+    {
+      "title"    : "Basic Machine Learning Pipeline",
+      "subtitle" : "",
+      "tags"     : "Ml, Pipeline, Beginner",
+      "url"      : "/2020/07/07/BasicMLPipeline/",
+      "date"     : "2020-07-07 00:00:00 -0400"
+    } ,
+  
+    {
+      "title"    : "Tricks to Improve your Random Forests",
+      "subtitle" : "",
+      "tags"     : "RandomForest, Tips, fastai",
+      "url"      : "/2020/07/01/RandomForests/",
+      "date"     : "2020-07-01 00:00:00 -0400"
+    } ,
+  
+    {
+      "title"    : "Design your First Custom Neural Network from scratch Using PyTorch",
+      "subtitle" : "",
+      "tags"     : "PyTorch, NN, Beginner",
+      "url"      : "/2020/06/12/Pytorch_from_scartch/",
+      "date"     : "2020-06-12 00:00:00 -0400"
+    } ,
+  
+    {
+      "title"    : "some BASH topics",
+      "subtitle" : "",
+      "tags"     : "bash, linux, command",
+      "url"      : "/2020/01/15/bash/",
+      "date"     : "2020-01-15 00:00:00 -0500"
+    } ,
+  
+    {
+      "title"    : "Introduction to Rcpp: making R much much faster",
+      "subtitle" : "",
+      "tags"     : "R",
+      "url"      : "/2020/01/01/Rcpp_basic/",
+      "date"     : "2020-01-01 00:00:00 -0500"
+    } ,
+  
+    {
+      "title"    : "Build your own website (with Jekyll and Minimal-mistakes theme)",
+      "subtitle" : "",
+      "tags"     : "",
+      "url"      : "/2019/12/12/personal_website/",
+      "date"     : "2019-12-12 00:00:00 -0500"
+    } 
+  
+]
