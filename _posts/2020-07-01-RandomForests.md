@@ -3,7 +3,7 @@ title:  "Tricks to Improve your Random Forests"
 date:   2020-07-01
 author: VJ
 layout: post
-header-img: "assets/images/mountains.jpg"
+header-img: "assets/images/RandomForest/mountains.jpg"
 # header-mask: 0.1
 comments: true
 # header:

@@ -1,0 +1,57 @@
+I"„<p>To Understand the ML pipeline in an Interactive way check out the <a href="https://shrouded-harbor-01593.herokuapp.com"><strong>Explorer</strong></a> App.</p>
+
+<h1 id="get-the-status-of-data">Get the Status of Data</h1>
+<h3 id="libraries-pandas-numpy-etc">Libraries: Pandas, NumPy Etc.</h3>
+
+<ul>
+  <li>Load data <code class="language-plaintext highlighter-rouge">pd.read_{filetype}('filename')</code></li>
+  <li>Get Shape of data <code class="language-plaintext highlighter-rouge">data.shape</code></li>
+  <li>Get the statistical information of the data <code class="language-plaintext highlighter-rouge">data.describe()</code></li>
+  <li>Know the Data types and info <code class="language-plaintext highlighter-rouge">data.info()</code></li>
+  <li>Know the count of missing values <code class="language-plaintext highlighter-rouge">data.isnull().sum()</code></li>
+</ul>
+
+<h1 id="visualize-the-data">Visualize The Data</h1>
+<h3 id="libraries-matplotlib-seaborn-plotly-etc">Libraries: Matplotlib, Seaborn, Plotly Etc.</h3>
+
+<ul>
+  <li>Plot the histograms and know the scaling of your data <code class="language-plaintext highlighter-rouge">data.hist(bins=10,figsize = (_,_),grid= False, Etc......)</code></li>
+  <li>Visualize the importance of each feature on the target variable <code class="language-plaintext highlighter-rouge">sns.FacetGrid(data, hue= "Column_name", col = "column_name", row, etc...)</code> and plot either <code class="language-plaintext highlighter-rouge">hist or scatter..</code></li>
+  <li>You can use <code class="language-plaintext highlighter-rouge">sns.factorplot()</code> for some variables</li>
+  <li><code class="language-plaintext highlighter-rouge">sns.boxplot(x, y, data)</code></li>
+  <li>Plot the distributions if varibale has different classes by defining <code class="language-plaintext highlighter-rouge">kind='kde'</code></li>
+  <li>Plot the Heat Map of all the columns to get a better view <code class="language-plaintext highlighter-rouge">corr = data.corr()</code>  and  <code class="language-plaintext highlighter-rouge">sns.heatmap(corr, .....)</code></li>
+  <li>Plot some Vilions on the way</li>
+</ul>
+
+<h1 id="take-care-of-missing-values-and-outliers">Take care of missing values and outliers</h1>
+
+<ul>
+  <li>You can either replace with mean or most repeating value of in the column or know the columns that are impacting the missing columns and replace them with their respective similar column values</li>
+</ul>
+
+<h1 id="feature-engineering">Feature Engineering</h1>
+
+<ul>
+  <li>Taking care of missing categorical classes by assigning a new class to it.</li>
+  <li>Combining similar columns to a single column.</li>
+  <li>Binning a column into groups</li>
+  <li>converting categorical into numerical variables such as count of the letters in a word, on hot encoding, LabelEncoder  etc..</li>
+  <li>Triming down numercial columns for better understading.</li>
+  <li>Fill Null values by modeling the data on a ml algorithm with null values as test data and the remaining as train data.</li>
+  <li>Scaling all the numerical fetures into a single scale</li>
+</ul>
+
+<h1 id="modeling-the-data">Modeling the Data</h1>
+<h3 id="libraries-from-sklearn-import-models-metrics-model_selection-cross_validation-etc">Libraries: From Sklearn import Models, Metrics, Model_selection, cross_validation, etc..</h3>
+
+<ul>
+  <li>Train a small portion of the data and claculate the scores on different algorithms to find a significant increase or decrease in the scores</li>
+  <li>Use Kflod validation of determine a good model</li>
+  <li>Get the important features that are helping to preidct the data better</li>
+  <li>Filter out the important features and use tecniques like Gradient Boosting, AdaBoost Etc.</li>
+  <li>Train the best models on whole data.</li>
+  <li>For Better Predictions Ensemble the best models using Maximum Voting or percentages Etc.</li>
+  <li>Submit the Predictions OR Test the model on the Test Data.</li>
+</ul>
+:ET

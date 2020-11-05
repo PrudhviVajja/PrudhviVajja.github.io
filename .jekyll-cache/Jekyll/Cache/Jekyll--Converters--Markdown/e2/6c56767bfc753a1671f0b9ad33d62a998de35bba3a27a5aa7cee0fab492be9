@@ -1,0 +1,76 @@
+I"�	<blockquote>
+  <p>What consumes your mind controls your life</p>
+</blockquote>
+
+<p>I am <strong>Data Scientist</strong> expanding my skill set by understanding and implementing state of the art machine learning and deep learning techniques.</p>
+
+<h3 id="hobbies">Hobbies:</h3>
+<ul>
+  <li>Sketching on my ipad</li>
+  <li>Writing Blogs</li>
+  <li>Procastinating 😛</li>
+</ul>
+
+<h3 id="skills">SKILLS:</h3>
+
+<ul>
+  <li><strong>Languages :</strong>
+    <ul>
+      <li>Python, R, Matlab, SQL</li>
+    </ul>
+  </li>
+  <li><strong>Cloud &amp; DataBase :</strong>
+    <ul>
+      <li>AWS, PostgreSQL, Hadoop MapReduce, Spark, Git</li>
+    </ul>
+  </li>
+  <li><strong>Software Tools :</strong>
+    <ul>
+      <li>Tensorflow, PyTorch • Sklearn Keras • OpenCV • Tableau</li>
+    </ul>
+  </li>
+  <li><strong>ML &amp; Stats :</strong>
+    <ul>
+      <li>Regression &amp; Classification • ANOVA Random Forests • Deep Learning Clustering • A/B Test • KDE</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="experience">Experience:</h3>
+
+<ul>
+  <li><strong>TATA Consultancy</strong> <em>Data Analyst, New Delhi</em>
+    <ul>
+      <li>Developed an Algorithm using Claims Data to minimize the risk of inventory and saving 150+ hours of man power.</li>
+      <li>Created and Optimized SQL Queries using Relational Algebra methods and reduced the run-time by 40%. Awarded pat on the back.</li>
+      <li>Automated the process of DataCleaning using python ands hell scripting.</li>
+    </ul>
+  </li>
+  <li><strong>Mesh Labs</strong> <em>Contributor + Testing, IUB</em>
+    <ul>
+      <li>Contributed with research associates in developing open source visualization jupyter notebook apps for NanoHub.org.</li>
+      <li>Created and deployed working apps for visualizing NanoMicrobealignment with live data using 3D models. NanoparticleShape.</li>
+    </ul>
+  </li>
+  <li><strong>IIT Bombay</strong> <em>Data Science Workshop, Intern</em>
+    <ul>
+      <li>Familiarized with one or more MachineLearning and statistical modeling tools such as R, Matplotlib, scikit-learn, Tensorflow.</li>
+      <li>Performed advance EDA to determine the climate patterns that effect the crops and built end-to-end regression model on top of it.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="education">Education:</h3>
+<ul>
+  <li><strong>Indiana University</strong> (2019 - 2021)
+    <ul>
+      <li>Master’s in Data Science</li>
+    </ul>
+  </li>
+  <li><strong>JNTU University</strong> (2014 - 2018)
+    <ul>
+      <li>Bachelor of Electronics and Communications</li>
+    </ul>
+  </li>
+</ul>
+:ET

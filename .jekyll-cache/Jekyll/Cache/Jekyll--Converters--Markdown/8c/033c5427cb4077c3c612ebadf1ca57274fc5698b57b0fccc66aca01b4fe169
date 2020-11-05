@@ -1,0 +1,228 @@
+I"�9<p>This whole website is built using <a href="https://jekyllrb.com/"><strong>Jekyll</strong></a> and theme <a href="https://mmistakes.github.io/minimal-mistakes/"><strong>minimal-mistakes</strong></a>. 
+I had no experience of HTML or CSS language, but still managed to get the website to work. That’s just how easy it is to work with <strong>Jekyll</strong>.</p>
+
+<p>I wouldn’t go through every step of the process in great detail as that would be too much text. But I’ll refer you to corresponding documents which will likely guide you through each of them.</p>
+
+<h3 id="other-resource">Other resource:</h3>
+<ul>
+  <li>Learning about Github Pages: <a href="http://jmcglone.com/guides/github-pages/">Github hosting</a></li>
+</ul>
+
+<h2 id="step-1-install-jekyll-and-minimal-mistakes-theme-and-generate-template-website">Step 1: install <em>Jekyll</em> and <em>minimal-mistakes</em> theme and generate template website</h2>
+
+<h3 id="install-jekyll">install <em>Jekyll</em></h3>
+<p>Type in terminal <code class="language-plaintext highlighter-rouge">gem install jekyll</code> for installation.  <br />
+This should work fine when you have all the dependencies installed. If you run into any issue, go to page <a href="https://jekyllrb.com/docs/installation/">jekyll install</a>.</p>
+
+<h3 id="install-minimal-mistakes">install <em>minimal-mistakes</em></h3>
+<p>It takes a little more work to install the theme. <br />
+You need to first generate a jekyll folder: <code class="language-plaintext highlighter-rouge">jekyll new anyname</code>. Then a folder named <code class="language-plaintext highlighter-rouge">anyname</code> is going to be created in your current directory, and it contains all the basic files to make a website. <br />
+Then follow the steps described in <a href="https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/">install minimal-mistakes</a>. It basically involves adding some lines to some files in <code class="language-plaintext highlighter-rouge">anyname</code>, or replacing a file with their version on Github, and removing some files.<br />
+After you run <code class="language-plaintext highlighter-rouge">bundle install</code>, all the dependencies of <strong>minimal-mistakes</strong> should be successfully installed.</p>
+
+<p>Type <code class="language-plaintext highlighter-rouge">bundle exec jekyll serve</code>, and then a template website will be locally hosted at <a href="localhost:4000/">localhost:4000/</a>.</p>
+
+<p>It should look something like this: <br />
+<!-- ![fresh site](/pics/website_tut/fresh.png) --></p>
+
+<p>Now there are a lot of stuff you can do. 
+Like setting up site title on topleft corner, changing author name, biography, adding social sharings etc. You can find corresponding fields of all of these in <code class="language-plaintext highlighter-rouge">_config.yml</code> (refer to <a href="https://mmistakes.github.io/minimal-mistakes/docs/configuration/">configuration</a>).</p>
+
+<h2 id="step-2-add-pages">Step 2: add pages</h2>
+
+<p>Website pages are specified in file <code class="language-plaintext highlighter-rouge">_data/navigation.yml</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></td><td class="rouge-code"><pre><span class="na">main</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Quick-Start</span><span class="nv"> </span><span class="s">Guide"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">/docs/quick-start-guide/</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Posts"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">/year-archive/</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Categories"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">/categories/</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Tags"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">/tags/</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Pages"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">/page-archive/</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Collections"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">/collection-archive/</span>
+  <span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">External</span><span class="nv"> </span><span class="s">Link"</span>
+    <span class="na">url</span><span class="pi">:</span> <span class="s">https://google.com</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Each <code class="language-plaintext highlighter-rouge">-</code> corresponds to one page tab:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">title</code> is the page title</li>
+  <li><code class="language-plaintext highlighter-rouge">url</code> is the link to the file that contains contents of the page</li>
+</ul>
+
+<p>For example if you want to add a new tab <code class="language-plaintext highlighter-rouge">Blogs</code>, you can add the following two lines to <code class="language-plaintext highlighter-rouge">navigation.yml</code>:</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre></td><td class="rouge-code"><pre><span class="err">	</span><span class="pi">-</span> <span class="na">title</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Blogs"</span>
+<span class="err">	</span>  <span class="na">url</span><span class="pi">:</span> <span class="s">/Blogs/</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Then you make a new directory <code class="language-plaintext highlighter-rouge">/_pages/</code>, create inside a markdown file <code class="language-plaintext highlighter-rouge">blogs.md</code> containing:</p>
+
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="nn">---</span>
+<span class="na">title</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">Blogs"</span>
+<span class="na">layout</span><span class="pi">:</span> <span class="s">archive</span>
+<span class="na">permalink</span><span class="pi">:</span> <span class="s">/Blogs/</span>
+<span class="na">author_profile</span><span class="pi">:</span> <span class="no">true</span>
+<span class="na">comments</span><span class="pi">:</span> <span class="no">true</span>
+<span class="nn">---</span>
+
+This is my blog page.
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Be sure the <code class="language-plaintext highlighter-rouge">permalink:</code> matches the <code class="language-plaintext highlighter-rouge">url</code> in <code class="language-plaintext highlighter-rouge">navigation.yml</code> file.
+Generate the website again, and look what’s new: <br />
+<!-- ![blogs](/pics/website_tut/blog.png) --></p>
+
+<p>That’s basically how a new webpage tab is added.</p>
+
+<h2 id="step-3-add-posts">Step 3: add posts</h2>
+<p>Right now your Blog page is just a single page. Next, we are going to add posts to this page.</p>
+
+<h3 id="posts">Posts</h3>
+<p>Posts should be kept in <code class="language-plaintext highlighter-rouge">_posts</code> folder and named after <code class="language-plaintext highlighter-rouge">YEAR-MONTH-DAY-filename.md</code> so that <em>minimal-mistakes</em> can correctly identify them.</p>
+
+<p>An example post markdown file:</p>
+
+<div class="language-md highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre></td><td class="rouge-code"><pre><span class="nn">---</span>
+<span class="na">layout</span><span class="pi">:</span> <span class="s">single</span>
+<span class="na">title</span><span class="pi">:</span>  <span class="s2">"</span><span class="s">My</span><span class="nv"> </span><span class="s">first</span><span class="nv"> </span><span class="s">post"</span>
+<span class="na">date</span><span class="pi">:</span>   <span class="s">2016-11-11</span>
+<span class="nn">---</span>
+
+my first post looks just fine
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>where <code class="language-plaintext highlighter-rouge">layout:single</code> specifies this is a single page post; <code class="language-plaintext highlighter-rouge">title</code> would appear on top of page; <code class="language-plaintext highlighter-rouge">date</code> keeps time of “latest update”, and could be used to sort your post. There are also a bunch of other parameters you can specify: <a href="https://mmistakes.github.io/minimal-mistakes/docs/posts/">other parameters</a>.</p>
+
+<p>Let’s create this toy post <code class="language-plaintext highlighter-rouge">toy.md</code> and put it in <code class="language-plaintext highlighter-rouge">_posts</code>.</p>
+
+<h3 id="modify-page-file-to-include-posts">Modify page file to include posts</h3>
+<p>In order to put <code class="language-plaintext highlighter-rouge">top.md</code> on you Blog page, you need to add commands in <code class="language-plaintext highlighter-rouge">blogs.md</code> to manually include it.</p>
+
+<p>There are many ways to do this. I’ll just give one example: <br />
+open the previous <code class="language-plaintext highlighter-rouge">blogs.md</code> file and add the following lines:</p>
+
+<!-- ![addToPage](/pics/website_tut/addToPage.png) -->
+
+<p>This is basically <a href="http://shopify.github.io/liquid/">Liquid language</a>. You can adapt this block of code to get different display: sort by year, month or category etc.</p>
+
+<p>Rename <code class="language-plaintext highlighter-rouge">toy.md</code>  with prefix <code class="language-plaintext highlighter-rouge">YEAR-MONTH-DAY</code>. Then you can see the it on Blog page:</p>
+
+<p><img src="/pics/website_tut/new_blog.png" alt="new blog" /></p>
+
+<h2 id="step-4-use-github-for-hosting">Step 4: use Github for hosting</h2>
+<p><a href="https://pages.github.com/">Github pages</a> is a great choice for free hosting. If you create a github repository named <code class="language-plaintext highlighter-rouge">username.github.io</code>, it will automatically convert the contents to  a webpage at address <code class="language-plaintext highlighter-rouge">username.github.io</code>. However to make this work, it takes more than just uploading all the related local files to the repository.</p>
+
+<p>The safest way is to copy the repository of <a href="https://github.com/mmistakes/minimal-mistakes">minimal mistakes</a>, and replace some files with your own version. Steps as below:</p>
+
+<ul>
+  <li>Copy <strong>minmal mistakes</strong>:</li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></td><td class="rouge-code"><pre><span class="c"># create a new folder for this online version website</span>
+<span class="nb">mkdir </span>GitPage
+<span class="nb">cd </span>GitPage
+
+<span class="c"># initiate git repository</span>
+git init
+
+<span class="c"># add minimal-mistakes repository to your remote</span>
+git remote add minimal <span class="s2">"https://github.com/mmistakes/minimal-mistakes"</span>
+<span class="c"># clone the repository to your folder</span>
+git pull minimal master
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Customize the files: <br />
+  After you pull all the stuff, you get a version of <a href="https://mmistakes.github.io/minimal-mistakes/">minimal mistakes website</a> on your computer. We want to keep the framework, remove the contents and put our stuff in.</p>
+
+    <ul>
+      <li>You can safely delete folders <code class="language-plaintext highlighter-rouge">/docs</code> and <code class="language-plaintext highlighter-rouge">/test</code>.</li>
+      <li>replace <code class="language-plaintext highlighter-rouge">/_data/navigation.yml</code>, <code class="language-plaintext highlighter-rouge">/_data/ui-text.yml</code> and <code class="language-plaintext highlighter-rouge">/_config.yml</code> with your own version.</li>
+      <li>move your <code class="language-plaintext highlighter-rouge">_pages</code> and <code class="language-plaintext highlighter-rouge">_posts</code> folder to here</li>
+    </ul>
+  </li>
+  <li>
+    <p>Push your customized version online:
+  Create the <code class="language-plaintext highlighter-rouge">username.github.io</code> repository as mentioned previously.</p>
+  </li>
+</ul>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></td><td class="rouge-code"><pre><span class="c"># add your github repository to remote</span>
+git remote add origin <span class="s2">"ADDRESS.OF.YOUR.GITHUB.REPOSITORY"</span>
+
+<span class="c"># track all files in GitPage folder and stage a commit</span>
+git add <span class="nb">.</span>
+git commit <span class="nt">-a</span> <span class="nt">-m</span> <span class="s2">"first commit"</span>
+
+<span class="c"># push the folder online</span>
+git push origin master
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>If every step goes well, your personal website should be alive at “username.github.io”!</p>
+
+<p><img src="https://www.residentadvisor.net/images/labels/oh!yeah!.jpg" alt="ohyeah" /></p>
+
+<h2 id="step-5-customize-website-style-to-be-updated">Step 5: customize website style (to be updated)</h2>
+<p>Now the website is up and running, everything’s great. However, if you are eager to modify the website style to better fit your taste, it’s gonna cost a little more work.</p>
+:ET

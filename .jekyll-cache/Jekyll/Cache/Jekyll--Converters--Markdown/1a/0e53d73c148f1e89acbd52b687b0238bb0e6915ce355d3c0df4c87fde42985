@@ -1,0 +1,219 @@
+I"]<<p><img src="https://cdn-images-1.medium.com/max/10574/0*I8sDqvRwyH3u3J8f" alt="Photo by [Cara Fuller](https://unsplash.com/@caraventurera?utm_source=medium&amp;utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&amp;utm_medium=referral) (**Fastest Mammal**)" /><em>Photo by <a href="https://unsplash.com/@caraventurera?utm_source=medium&amp;utm_medium=referral">Cara Fuller</a> on <a href="https://unsplash.com?utm_source=medium&amp;utm_medium=referral">Unsplash</a> (<strong>Fastest Mammal</strong>)</em></p>
+
+<p>Even when we have 1TB of Disk Storage, 8GB/16GB of RAM still pandas and much other data loading API struggles to load a 2GB file.</p>
+
+<p>This is because when a process requests for memory, memory is allocated in two ways:</p>
+
+<ol>
+  <li>
+    <p>Contiguous Memory Allocation (consecutive blocks are assigned)</p>
+  </li>
+  <li>
+    <p>NonContiguous Memory Allocation(separate blocks at different locations)</p>
+  </li>
+</ol>
+
+<p>Pandas use Contiguous Memory to load data into RAM because read and write operations are must faster on RAM than Disk(or SSDs).</p>
+
+<ul>
+  <li>
+    <p>Reading from SSDs: ~16,000 nanoseconds</p>
+  </li>
+  <li>
+    <p>Reading from RAM: ~100 nanoseconds</p>
+  </li>
+</ul>
+
+<p>Before going into multiprocessing &amp; GPU’s, etc… let us see how to use <em>pd.read_csv()</em> effectively.</p>
+
+<blockquote>
+  <h4 id="pandas-is-fine-for-loading-data-and-preprocessing-but-to-train-your-models-start-using-dataloader-from-tensorflow-or-pytorch-or-where-ever-you-run-your-model">Pandas is fine for loading data and preprocessing but to train your models start using DataLoader from <a href="https://www.tensorflow.org/api_docs/python/tf/data/Dataset">TensorFlow</a> or <a href="https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader">PyTorch</a> or where ever you run your model.</h4>
+</blockquote>
+
+<p><img src="https://cdn-images-1.medium.com/max/8000/0*k3JnCz15uVLILmMY" alt="Photo by [Sebastian Yepes](https://unsplash.com/@sebasluna?utm_source=medium&amp;utm_medium=referral) on [Unsplash](https://unsplash.com?utm_source=medium&amp;utm_medium=referral) (**fastest dog breed**)" /><em>Photo by <a href="https://unsplash.com/@sebasluna?utm_source=medium&amp;utm_medium=referral">Sebastian Yepes</a> on <a href="https://unsplash.com?utm_source=medium&amp;utm_medium=referral">Unsplash</a> (<strong>fastest dog breed</strong>)</em></p>
+
+<blockquote>
+  <h3 id="note-if-you-are-reading-in-your-mobile-you-may-not-be-able-to-scroll-through-the-code-open-the-gist-for-better-readability">Note: If you are reading in your mobile you may not be able to scroll through the code. (Open the Gist for better readability.)</h3>
+</blockquote>
+
+<h3 id="1-use-cols"><strong><em>1. use cols:</em></strong></h3>
+
+<p>Rather than loading data and removing unnecessary columns that aren’t useful when processing your data. load only the useful columns.</p>
+
+<script src="https://gist.github.com/PrudhviVajja/b2a87550ccc9ad1e6eb94df82339b2ff.js"></script>
+
+<h3 id="2-using-correct-dtypes-for-numerical-data"><strong>2<em>.</em> Using correct dtypes for numerical data:</strong></h3>
+
+<p>Every column has it’s own dtype in a pandas DataFrame, for example, integers have int64, int32, int16 etc…</p>
+
+<ul>
+  <li>
+    <p>int8 can store integers from -128 to 127.</p>
+  </li>
+  <li>
+    <p>int16 can store integers from -32768 to 32767.</p>
+  </li>
+  <li>
+    <p>int64 can store integers from -9223372036854775808 to 9223372036854775807.</p>
+  </li>
+</ul>
+
+<p>Pandas assign int64 to integer datatype by default, therefore by defining correct dtypes we can reduce memory usage significantly.</p>
+
+<script src="https://gist.github.com/PrudhviVajja/5d0d90e2e0d6adaea50cc7d4acf58e22.js"></script>
+
+<p><strong>🔥 Pro Tip:</strong> Use converters to replace missing values or NANs while loading data, especially for the columns that have predefined datatypes using dtype.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*kwUv9LSh0L-XDmj_Znu6YA.png" alt="" /></p>
+
+<iframe src="https://giphy.com/embed/l0O5Bb9UngW3Jo7vO" width="480" height="270" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+<p><a href="https://giphy.com/gifs/animation-dog-animated-l0O5Bb9UngW3Jo7vO">via GIPHY</a></p>
+
+<h3 id="3-using-correct-dtypes-for-categorical-columns"><strong><em>3. Using correct dtypes for categorical columns:</em></strong></h3>
+
+<p>In my Dataset, I have a column Thumb which is by default parsed as a string, but it contains only a fixed number of values that remain unchanged for any dataset.</p>
+
+<p><img src="https://cdn-images-1.medium.com/max/2000/1*9nZXro8upEt_2cxPepCRKw.png" alt="" /></p>
+
+<p>And also columns such as Gender, etc.. can be stored as <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/categorical.html">categorical</a> values which reduces the memory from ~1000 KB to ~100 KB. (check the sats)</p>
+
+<script src="https://gist.github.com/PrudhviVajja/f76c4c0318cd3785a27618a09f53fad3.js"></script>
+
+<p><strong>🔥 Pro Tip:</strong> If your DataFrame contains lots of empty values or missing values or NANs you can reduce their memory footprint by converting them to <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/sparse.html">Sparse Series</a>.</p>
+
+<script src="https://gist.github.com/PrudhviVajja/65b3c06c36b558f5de7af8fec49381fe.js"></script>
+
+<h3 id="4-nrows-skip-rows"><strong><em>4. nrows, skip rows</em></strong></h3>
+
+<p>Even before loading all the data into your RAM, it is always a good practice to test your functions and workflows using a small dataset and pandas have made it easier to choose precisely the number of rows (you can even skip the rows that you do not need.)</p>
+
+<p>In most of the cases for testing purpose, you don’t need to load all the data when a sample can do just fine.</p>
+
+<p>nrows The number of rows to read from the file.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">Import</span> <span class="n">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"train.csv"</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="mi">1000</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>skiprows Line numbers to skip (0-indexed) or the number of lines to skip (int) at the start of the file.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="rouge-code"><pre><span class="c1"># Can be either list or first N rows.
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'train.csv'</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span> 
+<span class="c1"># It might remove headings
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p><strong>🔥 Pro-Tip:</strong> An Effective use of nrows is when you have more than 100’s of columns to check and define proper dtypes for each and every column. All of this overhead can be reduced using nrows as shown below.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></td><td class="rouge-code"><pre><span class="n">sample</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"train.csv"</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># Load Sample data
+</span>
+<span class="n">dtypes</span> <span class="o">=</span> <span class="n">sample</span><span class="p">.</span><span class="n">dtypes</span> <span class="c1"># Get the dtypes
+</span><span class="n">cols</span> <span class="o">=</span> <span class="n">sample</span><span class="p">.</span><span class="n">columns</span> <span class="c1"># Get the columns
+</span>
+<span class="n">dtype_dictionary</span> <span class="o">=</span> <span class="p">{}</span> 
+<span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+    <span class="s">"""
+    Write your own dtypes using 
+    # rule 2
+    # rule 3 
+    """</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtypes</span><span class="p">[</span><span class="n">c</span><span class="p">])</span> <span class="o">==</span> <span class="s">'int64'</span><span class="p">:</span>
+        <span class="n">dtype_dictionary</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="s">'float32'</span> <span class="c1"># Handle NANs in int columns
+</span>    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dtype_dictionary</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">dtypes</span><span class="p">[</span><span class="n">c</span><span class="p">])</span>
+
+<span class="c1"># Load Data with increased speed and reduced memory.
+</span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"train.csv"</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_dictionary</span><span class="p">,</span> 
+                 <span class="n">keep_default_na</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> 
+                 <span class="n">error_bad_lines</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">na_values</span><span class="o">=</span><span class="p">[</span><span class="s">'na'</span><span class="p">,</span><span class="s">''</span><span class="p">])</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>**NOTE: **As NANs are considered to be float in pandas don’t forget to convert integer data_types to float if your columns contain NANs.</p>
+
+<p><strong>5. Loading Data in Chunks:</strong></p>
+
+<p>Memory <a href="https://wesmckinney.com/blog/update-on-upcoming-pandas-v0-10-new-file-parser-other-performance-wins/">Issues</a> in pandas read_csv() are there for a long time. So one of the best workarounds to load large datasets is in chunks.</p>
+
+<p><strong>Note:</strong> loading data in chunks is actually slower than reading whole data directly as you need to concat the chunks again but you can load files with more than 10’s of GB’s easily.</p>
+
+<script src="https://gist.github.com/PrudhviVajja/8309cb7ca2e833b3401026acbd97cb2c.js"></script>
+
+<iframe src="https://giphy.com/embed/3rgXBsmYd60rL3w7sc" width="480" height="240" frameborder="0" class="giphy-embed" allowfullscreen=""></iframe>
+<p><a href="https://giphy.com/gifs/nicolettegroome-animation-adventure-time-bmo-3rgXBsmYd60rL3w7sc">via GIPHY</a></p>
+
+<h3 id="6-multiprocessing-using-pandas">6. Multiprocessing using pandas:</h3>
+
+<p>As pandas don’t have njobs variable to make use of multiprocessing power. we can utilize multiprocessinglibrary to handle chunk size operations asynchronously on multi-threads which can reduce the run time by half.</p>
+
+<script src="https://gist.github.com/PrudhviVajja/b0c7f7aab2bfe6a261d6ec957a07f609.js"></script>
+
+<blockquote>
+  <p>**Note: **you need to define pool in <strong>main</strong> only because only main can distribute pool asynchronously among multiple processers.</p>
+</blockquote>
+
+<h3 id="7-dask-instead-of-pandas">7. Dask Instead of Pandas:</h3>
+
+<p>Although <a href="https://github.com/dask/dask">Dask</a> doesn’t provide a wide range of data preprocessing functions such as pandas it supports parallel computing and loads data faster than pandas</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre></td><td class="rouge-code"><pre><span class="kn">import</span> <span class="nn">dask.dataframe</span> <span class="k">as</span> <span class="n">dd</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">dd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"train.csv"</span><span class="p">,</span><span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s">'MachineHoursCurrentMeter'</span><span class="p">:</span> <span class="s">'float64'</span><span class="p">},</span><span class="n">assume_missing</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">data</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>🔥<strong>Pro Tip:</strong> If you want to find the time taken by a jupyter cell to run just add %%time magic function at the start of the cell</p>
+
+<p>Libraries to try out: <strong><a href="https://github.com/wiseio/paratext">Paratext</a>, <a href="https://github.com/h2oai/datatable">Datatable</a>.</strong></p>
+<blockquote>
+  <p>Their’s is an another way, You can rent a VM in the cloud, with 64 cores and 432GB RAM, for ~$3/hour or even a better price with some googling.
+<strong>caveat</strong>: you need to spend the next week configuring it.</p>
+</blockquote>
+
+<p>Thanks for reaching until the end, I hope you learned something new. Happy Loading….✌️. (🌩 If you like it.)</p>
+<blockquote>
+  <h3 id="comment-below-the-tricks-that-you-used-to-load-your-data-faster-i-will-add-them-to-the-list">Comment below the tricks that you used to load your data faster I will add them to the list.</h3>
+</blockquote>
+
+<p><strong><em>References(Add them to your blog list):</em></strong></p>
+
+<p>🔥<a href="https://pythonspeed.com"> Itamar Turner-Trauring</a> — Speed Python Master (Must ✅).</p>
+
+<p>🔥 <a href="http://gouthamanbalaraman.com/">Gouthaman Balaraman</a> — quantitative finance with python (Must ✅).</p>
+
+<p>Connect with me on <a href="https://www.linkedin.com/in/prudhvi-vajja-22079610b/">Linkedin</a>.</p>
+:ET
