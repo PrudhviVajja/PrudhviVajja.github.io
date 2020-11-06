@@ -1,4 +1,4 @@
-Thanks to [Hux-Blog]() for creating these templete
+Thanks to [Hux-Blog](https://github.com/Huxpro/huxpro.github.io) for creating these templete
 
 Blog User Manual
 ====================
@@ -342,3 +342,13 @@ Shout out to [@kitian616/jekyll-TeXt-theme](https://github.com/kitian616/jekyll-
 - Using [Github Flavored Markdown](https://help.github.com/articles/github-flavored-markdown/)
 - Using Baidu, Tencent/QQ analytics
 - Using [DuoShuo](http://duoshuo.com/) as the Disqus-like third party discussion system
+
+
+License
+-------
+
+Apache License 2.0.
+Copyright (c) 2015-present Huxpro
+
+Hux Blog is derived from [Clean Blog Jekyll Theme (MIT License)](https://github.com/BlackrockDigital/startbootstrap-clean-blog-jekyll/)
+Copyright (c) 2013-2016 Blackrock Digital LLC.

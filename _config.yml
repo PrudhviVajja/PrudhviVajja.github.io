@@ -6,7 +6,7 @@ header-mask: 1
 email: v.prudhvi0001@gmail.com
 description: "Data Scientist Grad student at Indiana University"
 keyword: "Data Science, machine Learning, Art, Prudhvi Vajja, "
-url: "https://LazyAlgorithms.github.io"              # your host, for absolute URL
+url: "https://PrudhviVajja.github.io"              # your host, for absolute URL
 baseurl: ""     #"https://PrudhviVajja.github.io"  # for example, '/blog' if your blog hosted on 'host/blog'
 
 # Publish posts or collection documents with a future date.
@@ -90,7 +90,7 @@ sidebar-avatar: /assets/images/edit/A_edit1.jpg      # use absolute URL, seeing 
 
 # Featured Tags
 featured-tags: true                     # whether or not using Feature-Tags
-featured-condition-size: 0              # A tag will be featured if the size of it is more than this condition value
+featured-condition-size: 1              # A tag will be featured if the size of it is more than this condition value
 
 
 
