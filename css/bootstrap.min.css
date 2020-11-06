@@ -8,6 +8,7 @@ html {
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
 }
+
 body {
   margin: 0;
 }
@@ -186,6 +187,15 @@ td,
 th {
   padding: 0;
 } /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
+
+/* Dark Theme Switcher */
+dark-mode-toggle {
+  --dark-mode-toggle-dark-icon: url("/assets/icons/sun.svg");
+  --dark-mode-toggle-light-icon: url("/assets/icons/moon.svg");
+  --dark-mode-toggle-icon-size: 4rem;
+  --dark-mode-toggle-remember-filter: invert(100%);
+} /* ! Source:  https://github.com/GoogleChromeLabs/dark-mode-toggle/blob/master/demo/dist.html */
+
 @media print {
   *,
   :after,
@@ -1811,6 +1821,9 @@ pre code {
 .col-xs-offset-0 {
   margin-left: 0;
 }
+
+
+
 @media (min-width: 768px) {
   .col-sm-1,
   .col-sm-10,

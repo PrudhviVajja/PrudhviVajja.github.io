@@ -1,6 +1,14 @@
 [
   
     {
+      "title"    : "Virtualization and how it all started...",
+      "subtitle" : "From software, hardware to combination of both.",
+      "tags"     : "XEN, KVM, BinaryTranslation, virtualization",
+      "url"      : "/2020/11/01/Virtualization_Paper_Reviews/",
+      "date"     : "2020-11-01 00:00:00 -0400"
+    } ,
+  
+    {
       "title"    : "⚡️Load the same csv file 10X faster and with 10X less memory.⚡️",
       "subtitle" : "Pandas, Dask, MultiProcessing, Etc…",
       "tags"     : "DataProcessing, Pandas, Python",

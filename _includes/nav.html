@@ -21,6 +21,10 @@
                 <div class="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
+                            <dark-mode-toggle id="dark-mode-toggle">
+                            </dark-mode-toggle>
+                        </li>
+                        <li>
                             <a href="{{ site.baseurl }}/">Home</a>
                         </li>
                         {% for page in site.pages %}
@@ -29,12 +33,17 @@
                             <a href="{{ page.url | prepend: site.baseurl }}">{{ page.title }}</a>
                         </li>
                         {% endif %}
+                        
                         {% endfor %}
                         <li class="search-icon">
                             <a href="javascript:void(0)">
-                                <i class="fa fa-search"></i>
+                                <em class="fa fa-search"></em>
                             </a>
                         </li>
+                        <!-- <li>
+                            <dark-mode-toggle id="dark-mode-toggle" apperance="toggle">
+                            </dark-mode-toggle>
+                        </li> -->
                     </ul>
                 </div>
             </div>

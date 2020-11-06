@@ -1,6 +1,6 @@
 # Site settings
-title: Thoughts 
-SEOTitle: ✨StarBoy✨
+title: Prudhvi Vajja 
+SEOTitle: ✨StarBoy✨ | Prudhvi Vajja
 header-img: img/people4.jpg
 header-mask: 1
 email: v.prudhvi0001@gmail.com
@@ -41,7 +41,9 @@ anchorjs: true                          # if you want to customize anchor. check
 # from PR#40, to support local preview for Jekyll 3.0
 # make sure you have this gem installed
 # `$ gem install jekyll-paginate`
-plugins: [jekyll-paginate]
+plugins:
+  - jekyll-paginate
+  # - jekyll-spaceship
 
 
 

@@ -11,16 +11,19 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Archive - ✨StarBoy✨">
+    <meta property="article:author" content="Prudhvi Vajja">
+    <meta name="image" property="og:image" content="https://prudhvivajja.github.io/assets/images/edit/A_edit1.jpg">
+    <meta property="og:title" content="Archive - ✨StarBoy✨ | Prudhvi Vajja">
     
     <meta property="og:type" content="website">
     <meta property="og:description" content="<b>keep hungry keep foolish</b>">
     
-    <meta property="og:image" content="http://localhost:4000/assets/images/edit/A_edit1.jpg">
+<!--     <meta property="og:image" content="http://localhost:4000/assets/images/edit/A_edit1.jpg"> -->
     <meta property="og:url" content="http://localhost:4000/archive/">
-    <meta property="og:site_name" content="✨StarBoy✨">
+    <meta property="og:site_name" content="✨StarBoy✨ | Prudhvi Vajja">
     
-    <title>Archive - ✨StarBoy✨</title>
+    
+    <title>Archive - ✨StarBoy✨ | Prudhvi Vajja</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -38,11 +41,23 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/hux-blog.min.css">
 
+    <!-- Bootstrap Core Dark CSS -->
+    <!-- <link rel="stylesheet" href="/css/bootstrap-dark.min.css"> -->
+
+    <!-- Custom CSS for Dark Theme-->
+    <!-- <link rel="stylesheet" href="/css/hux-blog-dark.min.css"> -->
+
     <!-- Custom Fonts -->
     <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
     <!-- Hux change font-awesome CDN to qiniu -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Add Mermaid Plugin -->
+    <script src="/js/mermaid.min.js"></script>
+
+    <!-- Dark Theme Module -->
+    <link rel="stylesheet" href="/css/dark-test.css" media="(prefers-color-scheme: light)">
+    <script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -72,7 +87,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Thoughts</a>
+                <a class="navbar-brand" href="/">Prudhvi Vajja</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -80,8 +95,13 @@
                 <div class="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
+                            <dark-mode-toggle id="dark-mode-toggle">
+                            </dark-mode-toggle>
+                        </li>
+                        <li>
                             <a href="/">Home</a>
                         </li>
+                        
                         
                         
                         
@@ -89,6 +109,7 @@
                         <li>
                             <a href="/about/">About</a>
                         </li>
+                        
                         
                         
                         
@@ -105,11 +126,20 @@
                         
                         
                         
+                        
+                        
+                        
+                        
+                        
                         <li class="search-icon">
                             <a href="javascript:void(0)">
-                                <i class="fa fa-search"></i>
+                                <em class="fa fa-search"></em>
                             </a>
                         </li>
+                        <!-- <li>
+                            <dark-mode-toggle id="dark-mode-toggle" apperance="toggle">
+                            </dark-mode-toggle>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -170,6 +200,7 @@
             __HuxNav__.close();
         })
     </script>
+
     <!-- Search -->
 <div class="search-page">
   <div class="search-icon-close-container">
@@ -225,7 +256,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 			<div id='tag_cloud' class="tags tags-sup js-tags">
 				<a class="tag-button--all" data-encode="">
 					Show All
-					<sup>7</sup>
+					<sup>8</sup>
 				</a>
 
 				
@@ -233,7 +264,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 				
 				
 				
-				<a data-sort="0005"
+				<a data-sort="0006"
 					data-encode="Beginner"
 					class="tag-button"
 					title="Beginner" rel="2">
@@ -241,7 +272,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>2</sup>
 				</a>
 				
-				<a data-sort="0005"
+				<a data-sort="0006"
 					data-encode="Pipeline"
 					class="tag-button"
 					title="Pipeline" rel="2">
@@ -249,7 +280,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>2</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="AWS"
 					class="tag-button"
 					title="AWS" rel="1">
@@ -257,7 +288,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="Advanced"
 					class="tag-button"
 					title="Advanced" rel="1">
@@ -265,7 +296,15 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
+					data-encode="BinaryTranslation"
+					class="tag-button"
+					title="BinaryTranslation" rel="1">
+					BinaryTranslation
+					<sup>1</sup>
+				</a>
+				
+				<a data-sort="0007"
 					data-encode="DataProcessing"
 					class="tag-button"
 					title="DataProcessing" rel="1">
@@ -273,7 +312,15 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
+					data-encode="KVM"
+					class="tag-button"
+					title="KVM" rel="1">
+					KVM
+					<sup>1</sup>
+				</a>
+				
+				<a data-sort="0007"
 					data-encode="ML"
 					class="tag-button"
 					title="ML" rel="1">
@@ -281,7 +328,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="Ml"
 					class="tag-button"
 					title="Ml" rel="1">
@@ -289,7 +336,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="NN"
 					class="tag-button"
 					title="NN" rel="1">
@@ -297,7 +344,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="Pandas"
 					class="tag-button"
 					title="Pandas" rel="1">
@@ -305,7 +352,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="PyTorch"
 					class="tag-button"
 					title="PyTorch" rel="1">
@@ -313,7 +360,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="Python"
 					class="tag-button"
 					title="Python" rel="1">
@@ -321,7 +368,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="R"
 					class="tag-button"
 					title="R" rel="1">
@@ -329,7 +376,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="RandomForest"
 					class="tag-button"
 					title="RandomForest" rel="1">
@@ -337,7 +384,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="Tips"
 					class="tag-button"
 					title="Tips" rel="1">
@@ -345,7 +392,15 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
+					data-encode="XEN"
+					class="tag-button"
+					title="XEN" rel="1">
+					XEN
+					<sup>1</sup>
+				</a>
+				
+				<a data-sort="0007"
 					data-encode="bash"
 					class="tag-button"
 					title="bash" rel="1">
@@ -353,7 +408,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="command"
 					class="tag-button"
 					title="command" rel="1">
@@ -361,7 +416,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="fastai"
 					class="tag-button"
 					title="fastai" rel="1">
@@ -369,11 +424,19 @@ https://github.com/kitian616/jekyll-TeXt-theme
 					<sup>1</sup>
 				</a>
 				
-				<a data-sort="0006"
+				<a data-sort="0007"
 					data-encode="linux"
 					class="tag-button"
 					title="linux" rel="1">
 					linux
+					<sup>1</sup>
+				</a>
+				
+				<a data-sort="0007"
+					data-encode="virtualization"
+					class="tag-button"
+					title="virtualization" rel="1">
+					virtualization
 					<sup>1</sup>
 				</a>
 			</div>
@@ -382,7 +445,19 @@ https://github.com/kitian616/jekyll-TeXt-theme
 			<div class="mini-post-list js-result d-none"><section>
 				<span class="fa listing-seperator">
 					<span class="tag-text">2020</span>
-				</span><div class="post-preview item" data-tags="DataProcessing,Pandas,Python">
+				</span><div class="post-preview item" data-tags="XEN,KVM,BinaryTranslation,virtualization">
+				    <a href="/2020/11/01/Virtualization_Paper_Reviews/">
+				        <h2 class="post-title">
+                            Virtualization and how it all started...
+				        </h2>
+				        
+				        <h3 class="post-subtitle">
+				            From software, hardware to combination of both.
+				        </h3>
+				        
+				    </a>
+					<hr>
+				</div><div class="post-preview item" data-tags="DataProcessing,Pandas,Python">
 				    <a href="/2020/10/04/Load_data_faster/">
 				        <h2 class="post-title">
                             ⚡️Load the same csv file 10X faster and with 10X less memory.⚡️
@@ -520,7 +595,7 @@ https://github.com/kitian616/jekyll-TeXt-theme
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; Thoughts 2020
+                    Copyright &copy; Prudhvi Vajja 2020
                     <br>
                     Powered by <a href="http://huangxuan.me">Hux Blog</a> |
                     <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
