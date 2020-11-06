@@ -717,6 +717,12 @@ table.table > tbody td,
 table.table > thead td {
   border: 1px solid #eee !important;
 }
+
+
+
+
+/* Extra Added Elements for the website */
+
 .rainbow {
   background-image: -webkit-gradient(
     linear,
@@ -772,6 +778,10 @@ table.table > thead td {
     -webkit-animation-iteration-count: infinite;
     -webkit-animation-timing-function: linear;
   }
+
+
+/* Extra Added Elements for the website */
+
 
 @media screen and (max-width: 767px) {
   .table-responsive {

@@ -11,7 +11,9 @@
     <meta name="theme-color" content="#000000">
     
     <!-- Open Graph -->
-    <meta property="og:title" content="Process of Creating an Effective Machine Learning Pipeline - ✨StarBoy✨">
+    <meta property="article:author" content="Prudhvi Vajja">
+    <meta name="image" property="og:image" content="https://prudhvivajja.github.io/assets/images/edit/A_edit1.jpg">
+    <meta property="og:title" content="Process of Creating an Effective Machine Learning Pipeline - ✨StarBoy✨ | Prudhvi Vajja">
     
     <meta property="og:type" content="article">
     <meta property="og:description" content="To Understand the ML pipeline in an Interactive way check out the Explorer App.
@@ -30,11 +32,12 @@
     <meta property="article:tag" content="AWS">
     
     
-    <meta property="og:image" content="http://localhost:4000/assets/images/edit/A_edit1.jpg">
+<!--     <meta property="og:image" content="http://localhost:4000/assets/images/edit/A_edit1.jpg"> -->
     <meta property="og:url" content="http://localhost:4000/2020/08/28/AdvanceMLPipeline/">
-    <meta property="og:site_name" content="✨StarBoy✨">
+    <meta property="og:site_name" content="✨StarBoy✨ | Prudhvi Vajja">
     
-    <title>Process of Creating an Effective Machine Learning Pipeline - ✨StarBoy✨</title>
+    
+    <title>Process of Creating an Effective Machine Learning Pipeline - ✨StarBoy✨ | Prudhvi Vajja</title>
 
     <!-- Web App Manifest -->
     <link rel="manifest" href="/pwa/manifest.json">
@@ -52,11 +55,23 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/hux-blog.min.css">
 
+    <!-- Bootstrap Core Dark CSS -->
+    <!-- <link rel="stylesheet" href="/css/bootstrap-dark.min.css"> -->
+
+    <!-- Custom CSS for Dark Theme-->
+    <!-- <link rel="stylesheet" href="/css/hux-blog-dark.min.css"> -->
+
     <!-- Custom Fonts -->
     <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
     <!-- Hux change font-awesome CDN to qiniu -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+    <!-- Add Mermaid Plugin -->
+    <script src="/js/mermaid.min.js"></script>
+
+    <!-- Dark Theme Module -->
+    <link rel="stylesheet" href="/css/dark-test.css" media="(prefers-color-scheme: light)">
+    <script type="module" src="https://unpkg.com/dark-mode-toggle"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -86,7 +101,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Thoughts</a>
+                <a class="navbar-brand" href="/">Prudhvi Vajja</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -94,8 +109,13 @@
                 <div class="navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
+                            <dark-mode-toggle id="dark-mode-toggle" apperance="toggle">
+                            </dark-mode-toggle>
+                        </li>
+                        <li>
                             <a href="/">Home</a>
                         </li>
+                        
                         
                         
                         
@@ -103,6 +123,7 @@
                         <li>
                             <a href="/about/">About</a>
                         </li>
+                        
                         
                         
                         
@@ -119,11 +140,20 @@
                         
                         
                         
+                        
+                        
+                        
+                        
+                        
                         <li class="search-icon">
                             <a href="javascript:void(0)">
-                                <i class="fa fa-search"></i>
+                                <em class="fa fa-search"></em>
                             </a>
                         </li>
+                        <!-- <li>
+                            <dark-mode-toggle id="dark-mode-toggle" apperance="toggle">
+                            </dark-mode-toggle>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -243,7 +273,7 @@
                     <h1>Process of Creating an Effective Machine Learning Pipeline</h1>
                     
                     <h2 class="subheading"></h2>
-                    <span class="meta">Posted by Thoughts on August 28, 2020</span>
+                    <span class="meta">Posted by Prudhvi Vajja on August 28, 2020</span>
                 </div>
             </div>
         </div>
@@ -592,95 +622,115 @@
         
         
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=R"
                     title="R"
                     rel="1">R</a>
         
-                <a data-sort="0005" 
+                <a data-sort="0006" 
                     href="/archive/?tag=Beginner"
                     title="Beginner"
                     rel="2">Beginner</a>
         
-                <a data-sort="0005" 
+                <a data-sort="0006" 
                     href="/archive/?tag=Pipeline"
                     title="Pipeline"
                     rel="2">Pipeline</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=AWS"
                     title="AWS"
                     rel="1">AWS</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=Advanced"
                     title="Advanced"
                     rel="1">Advanced</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
+                    href="/archive/?tag=BinaryTranslation"
+                    title="BinaryTranslation"
+                    rel="1">BinaryTranslation</a>
+        
+                <a data-sort="0007" 
                     href="/archive/?tag=DataProcessing"
                     title="DataProcessing"
                     rel="1">DataProcessing</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
+                    href="/archive/?tag=KVM"
+                    title="KVM"
+                    rel="1">KVM</a>
+        
+                <a data-sort="0007" 
                     href="/archive/?tag=ML"
                     title="ML"
                     rel="1">ML</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=Ml"
                     title="Ml"
                     rel="1">Ml</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=NN"
                     title="NN"
                     rel="1">NN</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=Pandas"
                     title="Pandas"
                     rel="1">Pandas</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=PyTorch"
                     title="PyTorch"
                     rel="1">PyTorch</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=Python"
                     title="Python"
                     rel="1">Python</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=RandomForest"
                     title="RandomForest"
                     rel="1">RandomForest</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=Tips"
                     title="Tips"
                     rel="1">Tips</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
+                    href="/archive/?tag=XEN"
+                    title="XEN"
+                    rel="1">XEN</a>
+        
+                <a data-sort="0007" 
                     href="/archive/?tag=bash"
                     title="bash"
                     rel="1">bash</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=command"
                     title="command"
                     rel="1">command</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=fastai"
                     title="fastai"
                     rel="1">fastai</a>
         
-                <a data-sort="0006" 
+                <a data-sort="0007" 
                     href="/archive/?tag=linux"
                     title="linux"
                     rel="1">linux</a>
+        
+                <a data-sort="0007" 
+                    href="/archive/?tag=virtualization"
+                    title="virtualization"
+                    rel="1">virtualization</a>
     </div>
 </section>
 
@@ -824,7 +874,7 @@
 </ul>
 
                 <p class="copyright text-muted">
-                    Copyright &copy; Thoughts 2020
+                    Copyright &copy; Prudhvi Vajja 2020
                     <br>
                     Powered by <a href="http://huangxuan.me">Hux Blog</a> |
                     <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
