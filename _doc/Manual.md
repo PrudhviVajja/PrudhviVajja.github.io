@@ -1,4 +1,6 @@
-Hux Blog User Manual
+Thanks to [Hux-Blog]() for creating these templete
+
+Blog User Manual
 ====================
 
 * Basics
@@ -79,11 +81,11 @@ For instance, [Hello 2015])(https://huangxuan.me/2015/01/29/hello-2015/) has the
 ```yml
 ---
 layout:     post
-title:      "Hello 2015"
-subtitle:   " \"Hello World, Hello Blog\""
+title:      "Title of the Blog"
+subtitle:   " \"Blog Subtitle\""
 date:       2015-01-29 12:00:00
-author:     "Hux"
-header-img: "img/post-bg-2015.jpg"
+author:     "Authour Name"
+header-img: "image path"
 catalog: true
 tags:
     - Life
