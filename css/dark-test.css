@@ -9,12 +9,12 @@
 }
 
 /* Dark Theme Switcher */
-dark-mode-toggle {
+/* dark-mode-toggle {
   --dark-mode-toggle-dark-icon: url("/assets/icons/sunny.png");
   --dark-mode-toggle-light-icon: url("/assets/icons/moon.png");
   --dark-mode-toggle-icon-size: 4rem;
   --dark-mode-toggle-remember-filter: invert(100%);
-} /*! Source:  https://github.com/GoogleChromeLabs/dark-mode-toggle/blob/master/demo/dist.html*/
+} ! Source:  https://github.com/GoogleChromeLabs/dark-mode-toggle/blob/master/demo/dist.html */
 
 @media (min-width: 1200px) {
     .post-container,
